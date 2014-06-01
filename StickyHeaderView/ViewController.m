@@ -9,16 +9,29 @@
 #import "ViewController.h"
 #import "HeaderView.h"
 
-#define HEADER_HEIGHT 200.0f
 #define HEADER_INIT_FRAME CGRectMake(0, 0, self.view.frame.size.width, HEADER_HEIGHT)
 #define CELL_HEIGHT 45.0f
 
 @interface ViewController () <UITableViewDelegate,UITableViewDataSource,HeaderViewDelegate>
 @property (strong, nonatomic) UITableView *tableView;
 @property (strong, nonatomic) HeaderView *headerView;
+@property (strong, nonatomic) NSArray *images;
 @end
 
 @implementation ViewController
+
+- (NSArray *)images
+{
+    if (!_images) {
+        _images = @[[UIImage imageNamed:@"Resources.bundle/iPhone1.png"],
+                    [UIImage imageNamed:@"Resources.bundle/iPhone2.png"],
+                    [UIImage imageNamed:@"Resources.bundle/iPhone3.png"],
+                    [UIImage imageNamed:@"Resources.bundle/iPhone4.png"],
+                    [UIImage imageNamed:@"Resources.bundle/iPhone5.png"],
+                    [UIImage imageNamed:@"Resources.bundle/iPhone6.png"],];
+    }
+    return _images;
+}
 
 #pragma mark - Load View
 - (void)viewDidLoad
@@ -45,13 +58,13 @@
 #pragma mark - Header View
 - (void)createHeaderView
 {
-    _headerView = [[HeaderView alloc]initWithFrame:HEADER_INIT_FRAME];
+    _headerView = [[HeaderView alloc] initWithFrame:HEADER_INIT_FRAME withImages:self.images];
     _headerView.delegate = self;
     [_tableView setTableHeaderView:_headerView];
 }
 
 #pragma mark - Header View Delegate Method
-- (void)toggleHeaderViewFrame
+- (void)toggleExpandedHeaderView
 {
     [UIView animateWithDuration:0.8
                      animations:^{
